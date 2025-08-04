@@ -1,6 +1,6 @@
 # 🧩 Component Finder
 
-![Component Finder Logo](./ico/icon_2.png)
+![Component Finder Logo](<./![Logo](https://raw.githubusercontent.com/douglaslira/component-finder/main/ico/image.png)>)
 
 **Component Finder** é uma extensão poderosa para o VS Code que permite localizar rapidamente onde e quantas vezes um determinado componente está sendo utilizado em projetos **React**, **Vue**, **Angular**, **TypeScript** ou **JavaScript**.
 
@@ -27,7 +27,7 @@
 
 > _Veja a extensão em ação:_
 
-![Preview da extensão](./screenshot.png)
+![Preview da extensão](./![Screenshot](https://raw.githubusercontent.com/douglaslira/component-finder/main/ico/screenshot.png)
 
 ---
 
@@ -55,4 +55,51 @@
 Acesse a [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/) (em breve) e procure por **Component Finder**  
 Ou instale diretamente via VS Code:
 
-> ext install nyxgames.component-finder
+```
+ext install nyxgames.component-finder
+```
+
+---
+
+## 👨‍💻 Desenvolvimento
+
+Clone o projeto:
+
+```bash
+git clone https://github.com/douglaslira/component-finder.git
+cd component-finder
+npm install
+npm run watch
+```
+
+Execute no modo de desenvolvimento no VS Code (`F5`).
+
+---
+
+## 🧪 Testado com
+
+- Visual Studio Code 1.70+
+- Node.js 16+
+- Projetos em React, Vue 2/3, Angular, HTML e TS
+
+---
+
+## 🏷️ Licença
+
+MIT © [Douglas Lira](https://github.com/douglaslira)
+
+---
+
+## 🤝 Contribuições
+
+Pull requests são bem-vindos! Sinta-se à vontade para sugerir melhorias, novos recursos ou relatar bugs.
+
+---
+
+## 💡 Inspiração
+
+Criado para facilitar a vida de desenvolvedores que lidam com grandes projetos de frontend e precisam de visibilidade sobre seus componentes.
+
+---
+
+🧩 **Component Finder** — _Encontre. Entenda. Refatore._
