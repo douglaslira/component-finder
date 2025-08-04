@@ -11,10 +11,14 @@ export function activate(context: vscode.ExtensionContext) {
     async () => {
       const componentName = await vscode.window.showInputBox({
         prompt:
-          "Nome do componente a verificar (ex: MyComponent ou app-header)",
+          "Name of the component to be checked (e.g. MyComponent or app-header)",
       });
 
       if (!componentName) return;
+
+      const loadingStatus = vscode.window.setStatusBarMessage(
+        "$(sync~spin) Component Finder: Waiting Loading..."
+      );
 
       const isPascalCase = /^[A-Z]/.test(componentName); // React/Vue
       const isKebabCase = /^[a-z]+(-[a-z0-9]+)+$/.test(componentName); // Angular (kebab-case)
@@ -64,8 +68,9 @@ export function activate(context: vscode.ExtensionContext) {
           exclude
         );
       } catch (err) {
-        vscode.window.showErrorMessage("Erro ao buscar arquivos.");
-        return;
+        vscode.window.showErrorMessage("Error retrieving files.");
+      } finally {
+        loadingStatus.dispose();
       }
 
       const fileMatches: { filePath: string; lines: number[] }[] = [];
@@ -101,7 +106,7 @@ export function activate(context: vscode.ExtensionContext) {
             usageRegex = new RegExp(`<${componentName}[\\s/>]`, "gi");
           } else {
             vscode.window.showWarningMessage(
-              `⚠️ O nome "${componentName}" não segue padrão PascalCase ou kebab-case.`
+              `⚠️ The name "${componentName}" does not follow the PascalCase or kebab-case standard.`
             );
             continue;
           }
@@ -120,13 +125,13 @@ export function activate(context: vscode.ExtensionContext) {
             fileMatches.push({ filePath, lines: matchingLines });
           }
         } catch (err) {
-          console.error("Erro ao ler arquivo:", err);
+          console.error("Error reading file:", err);
         }
       }
 
       if (fileMatches.length === 0) {
         vscode.window.showInformationMessage(
-          `❌ O componente "${componentName}" não foi encontrado.`
+          `❌ The component "${componentName}" not found.`
         );
       } else {
         provider.refresh(componentName, fileMatches);
