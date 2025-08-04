@@ -1,6 +1,7 @@
 {
   "name": "component-finder",
   "displayName": "Component Finder",
+  "publisher": "ComponentFinder",
   "description": "Check where and how many times a component is being used in your project. Ideal for React, Vue, Angular, or TypeScript projects.",
   "author": {
     "name": "Douglas Lira",
