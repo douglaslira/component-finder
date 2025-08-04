@@ -6,6 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
   const provider = new ComponentUsageProvider();
   vscode.window.registerTreeDataProvider("componentUsage", provider);
 
+  // Comando principal: verificar uso de componente
   const disposable = vscode.commands.registerCommand(
     "extension.checkComponentUsage",
     async () => {
@@ -16,12 +17,15 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (!componentName) return;
 
+      // Mostra "⏳ Waiting Loading..."
+      provider.refresh("", [], true);
+
       const loadingStatus = vscode.window.setStatusBarMessage(
-        "$(sync~spin) Component Finder: Waiting Loading..."
+        "$(sync~spin) Component Finder: Searching component usage..."
       );
 
       const isPascalCase = /^[A-Z]/.test(componentName); // React/Vue
-      const isKebabCase = /^[a-z]+(-[a-z0-9]+)+$/.test(componentName); // Angular (kebab-case)
+      const isKebabCase = /^[a-z]+(-[a-z0-9]+)+$/.test(componentName); // Angular
 
       const pattern = "**/*.{js,jsx,ts,tsx,html,vue}";
       const exclude = "**/{node_modules,.git,dist,out,build}/**";
@@ -35,22 +39,20 @@ export function activate(context: vscode.ExtensionContext) {
           !Array.isArray(vscode.workspace.workspaceFolders) ||
           vscode.workspace.workspaceFolders.length === 0
         ) {
-          vscode.window.showErrorMessage("Nenhum workspace ativo encontrado.");
+          vscode.window.showErrorMessage("No active workspaces found.");
           return;
         }
 
         if (vscode.workspace.workspaceFolders.length === 1) {
-          // Apenas uma pasta no workspace
           searchFolder = vscode.workspace.workspaceFolders[0];
         } else {
-          // Várias pastas — pergunta ao usuário
           const selected = await vscode.window.showQuickPick(
             vscode.workspace.workspaceFolders.map((folder) => folder.name),
             {
-              placeHolder: "Escolha a pasta onde deseja buscar o componente",
+              placeHolder:
+                "Select the folder where you want to search for the component.",
             }
           );
-
           if (!selected) return;
 
           searchFolder = vscode.workspace.workspaceFolders.find(
@@ -86,7 +88,6 @@ export function activate(context: vscode.ExtensionContext) {
           let usageRegex: RegExp;
 
           if (isPascalCase) {
-            // Case-sensitive para evitar tags nativas como <footer>
             const reactOrVuePattern = new RegExp(
               `<${componentName}[\\s/>]|<${componentName}$`
             );
@@ -97,7 +98,6 @@ export function activate(context: vscode.ExtensionContext) {
               reactOrVuePattern.test(content) || tsImportPattern.test(content);
             usageRegex = new RegExp(`<${componentName}[\\s/>]`, "g");
           } else if (isKebabCase) {
-            // Case-insensitive para Angular
             const angularPattern = new RegExp(
               `selector:\\s*['"]${componentName}['"]`,
               "i"
@@ -129,17 +129,32 @@ export function activate(context: vscode.ExtensionContext) {
         }
       }
 
+      // Atualiza TreeView com resultados
+      provider.refresh(componentName, fileMatches, false);
+
       if (fileMatches.length === 0) {
         vscode.window.showInformationMessage(
           `❌ The component "${componentName}" not found.`
         );
-      } else {
-        provider.refresh(componentName, fileMatches);
       }
     }
   );
 
-  context.subscriptions.push(disposable);
+  // Comando para limpar manualmente
+  const clearTreeCommand = vscode.commands.registerCommand(
+    "extension.clearComponentUsage",
+    () => {
+      // Não coloca em loading, apenas limpa
+      provider.refresh("", [], false);
+
+      vscode.window.setStatusBarMessage(
+        "🧹 Component Finder: Tree cleared.",
+        3000
+      );
+    }
+  );
+
+  context.subscriptions.push(disposable, clearTreeCommand);
 }
 
 export function deactivate() {}

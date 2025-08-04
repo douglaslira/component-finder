@@ -26,7 +26,11 @@
     "commands": [
       {
         "command": "extension.checkComponentUsage",
-        "title": "Check component usage"
+        "title": "Component Finder: Check component usage"
+      },
+      {
+        "command": "extension.clearComponentUsage",
+        "title": "Component Finder: Clear Usage Tree"
       }
     ],
     "views": {

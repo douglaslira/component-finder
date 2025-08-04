@@ -3,10 +3,10 @@ import * as path from "path";
 
 export class LineUsageItem extends vscode.TreeItem {
   constructor(line: number, filePath: string) {
-    super(`Linha ${line}`, vscode.TreeItemCollapsibleState.None);
+    super(`Line ${line}`, vscode.TreeItemCollapsibleState.None);
     this.command = {
       command: "vscode.open",
-      title: "Abrir Linha",
+      title: "Open file at line",
       arguments: [
         vscode.Uri.file(filePath),
         { selection: new vscode.Range(line - 1, 0, line - 1, 0) },
@@ -18,16 +18,32 @@ export class LineUsageItem extends vscode.TreeItem {
 
 export class FileUsageItem extends vscode.TreeItem {
   constructor(
-    public readonly label: string,
+    fileName: string,
     public readonly lines: number[],
     public readonly filePath: string
   ) {
-    super(
-      `${label} (${lines.length} uso${lines.length > 1 ? "s" : ""})`,
-      vscode.TreeItemCollapsibleState.Collapsed
-    );
-    this.resourceUri = vscode.Uri.file(filePath);
-    this.iconPath = vscode.ThemeIcon.File;
+    const fullLabel = `${fileName} (${lines.length} use${
+      lines.length > 1 ? "s" : ""
+    })`;
+    super(fullLabel, vscode.TreeItemCollapsibleState.Collapsed);
+    this.iconPath = new vscode.ThemeIcon("file");
+    this.tooltip = `${lines.length} use${
+      lines.length > 1 ? "s" : ""
+    } in ${filePath}`;
+  }
+}
+
+export class LoadingItem extends vscode.TreeItem {
+  constructor() {
+    super("⏳ Waiting Loading...", vscode.TreeItemCollapsibleState.None);
+    this.iconPath = new vscode.ThemeIcon("sync~spin");
+  }
+}
+
+export class EmptyItem extends vscode.TreeItem {
+  constructor() {
+    super("🗒️ No components to search", vscode.TreeItemCollapsibleState.None);
+    this.iconPath = new vscode.ThemeIcon("info");
   }
 }
 
@@ -38,15 +54,16 @@ export class ComponentUsageProvider
     new vscode.EventEmitter<void>();
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
-  private componentName: string = "";
   private usageMap: { filePath: string; lines: number[] }[] = [];
+  private isLoading: boolean = false;
 
   refresh(
     component: string,
-    fileMatches: { filePath: string; lines: number[] }[]
+    fileMatches: { filePath: string; lines: number[] }[],
+    loading = false
   ) {
-    this.componentName = component;
     this.usageMap = fileMatches;
+    this.isLoading = loading;
     this._onDidChangeTreeData.fire();
   }
 
@@ -57,7 +74,15 @@ export class ComponentUsageProvider
   getChildren(
     element?: vscode.TreeItem
   ): vscode.ProviderResult<vscode.TreeItem[]> {
+    if (this.isLoading) {
+      return [new LoadingItem()];
+    }
+
     if (!element) {
+      if (this.usageMap.length === 0) {
+        return [new EmptyItem()];
+      }
+
       return this.usageMap.map(
         ({ filePath, lines }) =>
           new FileUsageItem(path.basename(filePath), lines, filePath)

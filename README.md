@@ -34,7 +34,7 @@
 ## ⚙️ Como Usar
 
 1. Pressione `Ctrl+Shift+P` ou `Cmd+Shift+P` para abrir o **Command Palette**.
-2. Digite e selecione: `Component Finder: Verificar uso de componente`.
+2. Digite e selecione: `Component Finder: Check component usage`.
 3. Digite o nome do componente (ex: `MyComponent` ou `app-header`).
 4. O painel lateral mostrará os arquivos e as linhas onde o componente é utilizado.
 
