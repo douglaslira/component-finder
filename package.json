@@ -1,6 +1,7 @@
 {
   "name": "component-finder",
   "displayName": "Component Finder",
+  "publisher": "ComponentFinder",
   "description": "Check where and how many times a component is being used in your project. Ideal for React, Vue, Angular, or TypeScript projects.",
   "author": {
     "name": "Douglas Lira",
@@ -8,7 +9,7 @@
   },
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.70.0"
+    "vscode": "^1.101.2"
   },
   "categories": [
     "Other"
@@ -47,7 +48,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.102.0",
+    "@types/vscode": "^1.101.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
