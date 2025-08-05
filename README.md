@@ -1,6 +1,6 @@
 # 🧩 Component Finder
 
-![Component Finder Logo](https://raw.githubusercontent.com/douglaslira/component-finder/main/ico/image.png)
+![Component Finder Logo](https://raw.githubusercontent.com/douglaslira/component-finder/main/images/image.png)
 
 **Component Finder** é uma extensão poderosa para o VS Code que permite localizar rapidamente onde e quantas vezes um determinado componente está sendo utilizado em projetos **React**, **Vue**, **Angular**, **TypeScript** ou **JavaScript**.
 
@@ -25,9 +25,13 @@
 
 ## 📸 Capturas de Tela
 
+> _Pesquisa padrão do VSCode:_
+
+![Pesquisa padrão](https://raw.githubusercontent.com/douglaslira/component-finder/main/images/default.png)
+
 > _Veja a extensão em ação:_
 
-![Preview da extensão](https://raw.githubusercontent.com/douglaslira/component-finder/main/ico/screenshot.png)
+![Preview da extensão](https://raw.githubusercontent.com/douglaslira/component-finder/main/images/screenshot.png)
 
 ---
 
@@ -86,7 +90,7 @@ Execute no modo de desenvolvimento no VS Code (`F5`).
 
 ## 🏷️ Licença
 
-MIT © [Douglas Lira](https://github.com/douglaslira)
+MIT © [Douglas Lira](https://github.com/douglaslira/component-finder/blob/main/LICENSE.md)
 
 ---
 

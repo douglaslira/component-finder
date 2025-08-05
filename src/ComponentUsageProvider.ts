@@ -22,9 +22,7 @@ export class FileUsageItem extends vscode.TreeItem {
     public readonly lines: number[],
     public readonly filePath: string
   ) {
-    const fullLabel = `${fileName} (${lines.length} use${
-      lines.length > 1 ? "s" : ""
-    })`;
+    const fullLabel = `${fileName} (${lines.length})`;
     super(fullLabel, vscode.TreeItemCollapsibleState.Collapsed);
     this.iconPath = new vscode.ThemeIcon("file");
     this.tooltip = `${lines.length} use${
