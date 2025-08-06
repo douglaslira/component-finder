@@ -68,3 +68,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Fixed
 
 - Documentation and change logs
+
+## [0.0.9] - 2025-08-06
+
+### Added
+
+- Added English version to readme
